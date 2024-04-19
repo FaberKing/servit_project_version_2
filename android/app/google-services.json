@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "90996887838",
+    "project_id": "servit-2",
+    "storage_bucket": "servit-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90996887838:android:319390ea7c952c2570790f",
+        "android_client_info": {
+          "package_name": "com.example.servit_project_version_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANwPP4c0CYyD81VEFEnPVKWwNO_oTqJdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
