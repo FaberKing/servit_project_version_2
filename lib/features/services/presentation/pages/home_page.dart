@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           const Gap(16),
-          BlocBuilder<AllServicesBloc, AllServicesStatePro>(
+          BlocBuilder<AllServicesBloc, AllServicesStateImpl>(
             builder: (context, state) {
               switch (state.status) {
                 case ServicesStatus.failure:

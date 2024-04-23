@@ -8,7 +8,7 @@ class SearchServicesUseCase {
 
   SearchServicesUseCase(this._repository);
 
-  Future<Either<Failure, List<ServicesEntity>>> call({required String query}) {
-    return _repository.searchServices(query);
+  Future<Either<Failure, List<ServicesEntity>>> call({required String query, String? docId}) {
+    return _repository.searchServices(query, docId);
   }
 }

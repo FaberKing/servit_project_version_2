@@ -86,13 +86,6 @@ class _RegisterFormState extends State<RegisterForm> {
                       ),
                       errorText: state.email.displayError != null ? 'invalid email' : null,
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value == '') {
-                    //     return 'Can not be empty';
-                    //   } else {
-                    //     return null;
-                    //   }
-                    // },
                   );
                 },
               ),
@@ -141,14 +134,6 @@ class _RegisterFormState extends State<RegisterForm> {
                       ),
                       errorText: state.password.displayError != null ? 'invalid password' : null,
                     ),
-
-                    // validator: (value) {
-                    //   if (value == null || value == '') {
-                    //     return 'Can not be empty';
-                    //   } else {
-                    //     return null;
-                    //   }
-                    // },
                   );
                 },
               ),
@@ -201,13 +186,6 @@ class _RegisterFormState extends State<RegisterForm> {
                           ? 'password do not match'
                           : null,
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value == '') {
-                    //     return 'Can not be empty';
-                    //   } else {
-                    //     return null;
-                    //   }
-                    // },
                   );
                 },
               ),
@@ -215,29 +193,13 @@ class _RegisterFormState extends State<RegisterForm> {
                 height: 40,
               ),
               BlocConsumer<RegisterCubit, RegisterState>(
-                listener: (context, state) {
-                  // if (state.status.isSuccess) {
-                  //   context.read<RegisterCubit>().storeCredentials();
-                  // } else {
-                  //   null;
-                  // }
-                },
+                listener: (context, state) {},
                 builder: (context, state) {
                   return FilledButton.tonal(
                     key: const Key('signUpForm_continue_raisedButton'),
                     onPressed: state.isValid
                         ? () => context.read<RegisterCubit>().registerAndStoreWithCredentials()
-                        : null
-                    // if (formKey.currentState!.validate()) {
-                    //   context.read<AuthBloc>().add(
-                    //         OnRegisterWithEmail(
-                    //           emailController.text,
-                    //           passwordController.text,
-                    //         ),
-                    //       );
-                    //   print('success register');
-                    // }
-                    ,
+                        : null,
                     style: const ButtonStyle(
                       minimumSize: MaterialStatePropertyAll(
                         Size(double.infinity, 50),

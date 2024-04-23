@@ -6,7 +6,7 @@ import '../../../../core/error/exception.dart';
 abstract class ServicesRemoteDataSource {
   Future<List<ServicesModel>> allServices(String? startDocId);
   Future<List<ServicesModel>> categoryServices(String category);
-  Future<List<ServicesModel>> searchServices(String query);
+  Future<List<ServicesModel>> searchServices(String query, String? startDocId);
   Future<List<Map<String, dynamic>>> categories();
 }
 
@@ -37,6 +37,7 @@ class ServicesRemoteDataSourceImpl implements ServicesRemoteDataSource {
 
       final startAfterDoc =
           await FirebaseFirestore.instance.collection('services').doc(docId).get();
+
       final result = await FirebaseFirestore.instance
           .collection('services')
           .withConverter(
@@ -76,8 +77,30 @@ class ServicesRemoteDataSourceImpl implements ServicesRemoteDataSource {
   }
 
   @override
-  Future<List<ServicesModel>> searchServices(String query) async {
+  Future<List<ServicesModel>> searchServices(String query, String? startDocId) async {
     try {
+      if (startDocId == null || startDocId.isEmpty) {
+        final result = await FirebaseFirestore.instance
+            .collection('services')
+            .withConverter(
+              fromFirestore: ServicesModel.fromFirestore,
+              toFirestore: (ServicesModel servicesModel, options) => servicesModel.toFirestore(),
+            )
+            .where(
+              Filter.or(
+                Filter("storeName", isEqualTo: query),
+                Filter("facilities", arrayContains: query),
+              ),
+            )
+            // .orderBy('id', descending: true)
+            .limit(10)
+            .get();
+        return result.docs.map((e) => e.data()).toList();
+      }
+
+      final startAfterDoc =
+          await FirebaseFirestore.instance.collection('services').doc(startDocId).get();
+
       final result = await FirebaseFirestore.instance
           .collection('services')
           .withConverter(
@@ -90,7 +113,10 @@ class ServicesRemoteDataSourceImpl implements ServicesRemoteDataSource {
               Filter("facilities", arrayContains: query),
             ),
           )
+          .startAfterDocument(startAfterDoc)
+          .limit(10)
           .get();
+
       if (result.docs.isEmpty) {
         throw NotFoundException();
       } else {

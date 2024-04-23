@@ -27,27 +27,6 @@ class UserModel extends UserEntity {
     );
   }
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json['id'],
-        fName: json['fName'],
-        lName: json['lName'],
-        email: json['email'],
-        profilePicture: json['profilePhoto'],
-        phoneNumber: json['phoneNumber'],
-        status: json['status'],
-        createdAt: json['createdAt'],
-      );
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "fName": fName,
-        "lName": lName,
-        "email": email,
-        "profilePhoto": profilePicture,
-        "phoneNumber": phoneNumber,
-        "status": status,
-        "createdAt": createdAt,
-      };
-
   Map<String, dynamic> toFirestore() => {
         "id": id,
         "fName": fName,

@@ -7,13 +7,15 @@ sealed class SearchServicesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OnGetSearchServices extends SearchServicesEvent {
+class OnGetSearchServices extends SearchServicesEvent {}
+
+class OnResetSearchServices extends SearchServicesEvent {}
+
+class OnChangesQuery extends SearchServicesEvent {
   final String query;
 
-  const OnGetSearchServices(this.query);
+  const OnChangesQuery(this.query);
 
   @override
   List<Object> get props => [query];
 }
-
-class OnResetSearchServices extends SearchServicesEvent {}

@@ -22,11 +22,8 @@ class ServicesRepositoryImpl implements ServicesRepository {
 
   @override
   Future<Either<Failure, List<ServicesEntity>>> allServices(String? docId) async {
-    // bool online = await networkInfo.isConnected();
-
     try {
       final result = await servicesRemoteDataSource.allServices(docId);
-      // print("$result ==========================================================");
       return Right(result.map((e) => e.toEntity).toList());
     } on TimeoutException {
       return const Left(TimeoutFailure('Timeout, No response'));
@@ -58,9 +55,12 @@ class ServicesRepositoryImpl implements ServicesRepository {
   }
 
   @override
-  Future<Either<Failure, List<ServicesEntity>>> searchServices(String query) async {
+  Future<Either<Failure, List<ServicesEntity>>> searchServices(
+    String query,
+    String? startDocId,
+  ) async {
     try {
-      final result = await servicesRemoteDataSource.searchServices(query);
+      final result = await servicesRemoteDataSource.searchServices(query, startDocId);
       return Right(result.map((e) => e.toEntity).toList());
     } on TimeoutException {
       return const Left(TimeoutFailure('Timeout, No response'));

@@ -5,6 +5,8 @@ import 'package:servit_project_version_2/core/app/bloc/app_bloc.dart';
 import 'package:servit_project_version_2/core/common/widgets/scaffold_navigation.dart';
 import 'package:servit_project_version_2/features/services/presentation/bloc/all_category/all_category_bloc.dart';
 import 'package:servit_project_version_2/features/services/presentation/bloc/all_services/all_services_bloc.dart';
+import 'package:servit_project_version_2/features/services/presentation/bloc/search_services/search_services_bloc.dart';
+import 'package:servit_project_version_2/features/services/presentation/bloc/services_by_category/services_by_category_bloc.dart';
 import 'package:servit_project_version_2/features/user/auth/presentation/pages/login_page.dart';
 import 'package:servit_project_version_2/features/user/auth/presentation/pages/register_page.dart';
 import 'package:servit_project_version_2/features/user/auth/presentation/pages/start_page.dart';
@@ -51,7 +53,9 @@ abstract class AppRouter {
                             create: (context) => locator<AllServicesBloc>(),
                           ),
                         ],
-                        child: const SearchPage(),
+                        child: const HomePage(
+                          ee: 'ssa',
+                        ),
                       ),
                     ),
                   ),
@@ -60,8 +64,15 @@ abstract class AppRouter {
                   path: 'list_search/search',
                   name: 'list_search',
                   pageBuilder: (context, state) {
-                    return const MaterialPage(
-                      child: SearchPage(),
+                    return MaterialPage(
+                      child: MultiBlocProvider(providers: [
+                        BlocProvider(
+                          create: (context) => locator<SearchServicesBloc>(),
+                        ),
+                        BlocProvider(
+                          create: (context) => locator<ServicesByCategoryBloc>(),
+                        ),
+                      ], child: const SearchPage()),
                     );
                   },
                 )

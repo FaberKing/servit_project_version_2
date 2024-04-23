@@ -132,13 +132,6 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       errorText: state.password.displayError != null ? 'invalid password' : null,
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value == '') {
-                    //     return 'Can not be empty';
-                    //   } else {
-                    //     return null;
-                    //   }
-                    // },
                   );
                 },
               ),
@@ -148,31 +141,13 @@ class _LoginFormState extends State<LoginForm> {
               BlocBuilder<LoginCubit, LoginState>(
                 builder: (context, state) {
                   return FilledButton.tonal(
-                    onPressed:
-                        // if (formKey.currentState!.validate()) {
-                        // context.read<AuthBloc>().add(
-                        //       OnLoginWithEmail(
-                        //         emailController.text,
-                        //         passwordController.text,
-                        //       ),
-                        //     );
-                        state.isValid
-                            ? () => context.read<LoginCubit>().logInWithCredentials()
-                            : null
-                    // log('success - login');
-                    // }
-                    ,
+                    onPressed: state.isValid
+                        ? () => context.read<LoginCubit>().logInWithCredentials()
+                        : null,
                     style: const ButtonStyle(
                       minimumSize: MaterialStatePropertyAll(
                         Size(double.infinity, 50),
                       ),
-                      // shape: MaterialStatePropertyAll(
-                      //   RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.all(
-                      //       Radius.circular(24),
-                      //     ),
-                      //   ),
-                      // ),
                     ),
                     child: state.status.isInProgress
                         ? const CircularProgressIndicator.adaptive()
@@ -182,30 +157,6 @@ class _LoginFormState extends State<LoginForm> {
                               fontSize: 16,
                             ),
                           ),
-                    // child: BlocConsumer<AuthBloc, AuthState>(
-                    //   builder: (context, state) {
-                    //     if (state is AuthLoading) {
-                    //       return CircularProgressIndicator();
-                    //     }
-                    //     return const Text(
-                    //       'Login',
-                    //       style: TextStyle(
-                    //         fontSize: 16,
-                    //       ),
-                    //     );
-                    //   },
-                    //   listener: (context, state) {
-                    //     if (state is AuthFailure) {
-                    //       AppDialogs.showCustomDialog(
-                    //         context: context,
-                    //         icons: Icons.error,
-                    //         title: 'Error',
-                    //         content: state.message,
-                    //         onPressed: () => context.pop(),
-                    //       );
-                    //     }
-                    //   },
-                    // ),
                   );
                 },
               ),

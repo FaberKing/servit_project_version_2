@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
@@ -19,21 +18,13 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
   };
 }
 
-class AllServicesBloc extends Bloc<AllServicesEvent, AllServicesStatePro> {
+class AllServicesBloc extends Bloc<AllServicesEvent, AllServicesStateImpl> {
   final GetAllServicesUseCase _useCase;
-  AllServicesBloc(this._useCase) : super(const AllServicesStatePro()) {
+  AllServicesBloc(this._useCase) : super(const AllServicesStateImpl()) {
     on<OnGetAllServices>(
       _onGetAllServices,
       transformer: throttleDroppable(throttleDuration),
     );
-    // on<OnGetAllServices>((event, emit) async {
-    //   emit(AllServicesLoading());
-    //   final result = await _useCase();
-    //   result.fold(
-    //     (failure) => emit(AllServicesFailure(failure.message)),
-    //     (data) => emit(AllServicesLoaded(data)),
-    //   );
-    // });
   }
 
   FutureOr<void> _onGetAllServices(OnGetAllServices event, Emitter<AllServicesState> emit) async {
@@ -41,8 +32,7 @@ class AllServicesBloc extends Bloc<AllServicesEvent, AllServicesStatePro> {
 
     if (state.status == ServicesStatus.initial) {
       final result = await _useCase();
-      // log('$result');
-      // log('$state');
+
       return result.fold(
         (failure) => emit(state.copyWith(status: ServicesStatus.failure, message: failure.message)),
         (data) => data.length < 10
@@ -57,15 +47,17 @@ class AllServicesBloc extends Bloc<AllServicesEvent, AllServicesStatePro> {
     }
 
     final result = await _useCase(docId: state.services.last.id);
-    // log('$result');
-    // log('$state');
 
     result.fold(
       (failure) => emit(state.copyWith(status: ServicesStatus.failure, message: failure.message)),
       (data) => data.isEmpty || data.length < 10
-          ? emit(state.copyWith(hasReachedMax: true))
-          : emit(state.copyWith(
-              status: ServicesStatus.success, services: List.of(state.services)..addAll(data))),
+          ? emit(
+              state.copyWith(hasReachedMax: true),
+            )
+          : emit(
+              state.copyWith(
+                  status: ServicesStatus.success, services: List.of(state.services)..addAll(data)),
+            ),
     );
   }
 }

@@ -6,6 +6,6 @@ import '../../../../core/error/failure.dart';
 abstract class ServicesRepository {
   Future<Either<Failure, List<ServicesEntity>>> allServices(String? docId);
   Future<Either<Failure, List<ServicesEntity>>> categoryServices(String category);
-  Future<Either<Failure, List<ServicesEntity>>> searchServices(String query);
+  Future<Either<Failure, List<ServicesEntity>>> searchServices(String query, String? docId);
   Future<Either<Failure, List<Map<String, dynamic>>>> categories();
 }
