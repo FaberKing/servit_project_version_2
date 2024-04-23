@@ -13,14 +13,14 @@ final class SearchServicesStateImpl extends SearchServicesState {
   final SearchStatus status;
   final List<ServicesEntity> services;
   final bool hasReachedMax;
-  final String query;
+  final SearchQueryEntity query;
   final String message;
 
   const SearchServicesStateImpl({
     this.status = SearchStatus.initial,
     this.services = const <ServicesEntity>[],
     this.hasReachedMax = false,
-    this.query = '',
+    this.query = SearchQueryEntity.empty,
     this.message = 'empty',
   });
 
@@ -28,7 +28,7 @@ final class SearchServicesStateImpl extends SearchServicesState {
     SearchStatus? status,
     List<ServicesEntity>? services,
     bool? hasReachedMax,
-    String? query,
+    SearchQueryEntity? query,
     String? message,
   }) {
     return SearchServicesStateImpl(

@@ -11,10 +11,28 @@ class OnGetSearchServices extends SearchServicesEvent {}
 
 class OnResetSearchServices extends SearchServicesEvent {}
 
-class OnChangesQuery extends SearchServicesEvent {
+class OnChangesSearch extends SearchServicesEvent {
   final String query;
 
-  const OnChangesQuery(this.query);
+  const OnChangesSearch(this.query);
+
+  @override
+  List<Object> get props => [query];
+}
+
+class OnChangesCategory extends SearchServicesEvent {
+  final String query;
+
+  const OnChangesCategory(this.query);
+
+  @override
+  List<Object> get props => [query];
+}
+
+class OnChangesRating extends SearchServicesEvent {
+  final String query;
+
+  const OnChangesRating(this.query);
 
   @override
   List<Object> get props => [query];

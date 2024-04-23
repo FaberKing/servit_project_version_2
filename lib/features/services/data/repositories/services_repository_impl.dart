@@ -8,6 +8,7 @@ import 'package:dartz/dartz.dart';
 import 'package:servit_project_version_2/core/error/exception.dart';
 import 'package:servit_project_version_2/core/error/failure.dart';
 import 'package:servit_project_version_2/features/services/data/datasource/services_remote_data_source.dart';
+import 'package:servit_project_version_2/features/services/domain/entities/search_query_entity.dart';
 import 'package:servit_project_version_2/features/services/domain/entities/services_entity.dart';
 import 'package:servit_project_version_2/features/services/domain/repositories/services_repository.dart';
 
@@ -56,11 +57,11 @@ class ServicesRepositoryImpl implements ServicesRepository {
 
   @override
   Future<Either<Failure, List<ServicesEntity>>> searchServices(
-    String query,
+    SearchQueryEntity query,
     String? startDocId,
   ) async {
     try {
-      final result = await servicesRemoteDataSource.searchServices(query, startDocId);
+      final result = await servicesRemoteDataSource.searchServices(query.toModel, startDocId);
       return Right(result.map((e) => e.toEntity).toList());
     } on TimeoutException {
       return const Left(TimeoutFailure('Timeout, No response'));

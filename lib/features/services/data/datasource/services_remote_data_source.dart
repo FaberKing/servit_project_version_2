@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:servit_project_version_2/features/services/data/model/search_query_model.dart';
 import 'package:servit_project_version_2/features/services/data/model/services_model.dart';
 
 import '../../../../core/error/exception.dart';
@@ -6,7 +7,7 @@ import '../../../../core/error/exception.dart';
 abstract class ServicesRemoteDataSource {
   Future<List<ServicesModel>> allServices(String? startDocId);
   Future<List<ServicesModel>> categoryServices(String category);
-  Future<List<ServicesModel>> searchServices(String query, String? startDocId);
+  Future<List<ServicesModel>> searchServices(SearchQueryModel query, String? startDocId);
   Future<List<Map<String, dynamic>>> categories();
 }
 
@@ -77,7 +78,7 @@ class ServicesRemoteDataSourceImpl implements ServicesRemoteDataSource {
   }
 
   @override
-  Future<List<ServicesModel>> searchServices(String query, String? startDocId) async {
+  Future<List<ServicesModel>> searchServices(SearchQueryModel query, String? startDocId) async {
     try {
       if (startDocId == null || startDocId.isEmpty) {
         final result = await FirebaseFirestore.instance
@@ -87,9 +88,15 @@ class ServicesRemoteDataSourceImpl implements ServicesRemoteDataSource {
               toFirestore: (ServicesModel servicesModel, options) => servicesModel.toFirestore(),
             )
             .where(
-              Filter.or(
-                Filter("storeName", isEqualTo: query),
-                Filter("facilities", arrayContains: query),
+              Filter.and(
+                Filter("serviceName", isGreaterThanOrEqualTo: '${query.querySearch}'),
+                Filter("serviceName", isLessThanOrEqualTo: '${query.querySearch}\uf8ff'),
+              ),
+            )
+            .where(
+              Filter.and(
+                Filter("category", isGreaterThanOrEqualTo: '${query.queryCategory}'),
+                Filter("category", isLessThanOrEqualTo: '${query.queryCategory}\uf8ff'),
               ),
             )
             // .orderBy('id', descending: true)
@@ -109,7 +116,7 @@ class ServicesRemoteDataSourceImpl implements ServicesRemoteDataSource {
           )
           .where(
             Filter.or(
-              Filter("storeName", isEqualTo: query),
+              Filter("serviceName", isEqualTo: query),
               Filter("facilities", arrayContains: query),
             ),
           )
